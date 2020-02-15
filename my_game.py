@@ -2,9 +2,9 @@ import pygame
 import sys
 import time
 
-from classes import Entity
-# test
-# seting the size of the screen
+from entity_classes import Entity
+
+# setting the size of the screen
 screen = pygame.display.set_mode((2000, 1000))
 
 # setting the game name
