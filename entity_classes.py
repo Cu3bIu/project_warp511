@@ -1,5 +1,6 @@
 import pygame
 import math
+from general_classes import DotIndicator
 
 color1 = (20, 100, 55)
 color2 = (100, 150, 2)
@@ -245,15 +246,4 @@ class Entity:
         print('')
         print(f'Maximum turn angle: {self.max_turn_angle}')
 
-
-class DotIndicator:
-    def __init__(self, screen):
-        self.color = (255, 0, 0)
-        self.screen = screen
-
-    def draw(self, x, y):
-        pygame.draw.rect(self.screen, self.color, (x, y, 5, 5))
-
-    def show(self):
-        pass
 
