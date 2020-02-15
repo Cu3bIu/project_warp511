@@ -2,7 +2,7 @@ import pygame
 import sys
 import time
 
-from impulse_based_turning.classes import Entity
+from classes import Entity
 
 # seting the size of the screen
 screen = pygame.display.set_mode((2000, 1000))
