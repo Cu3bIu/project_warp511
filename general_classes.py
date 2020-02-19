@@ -1,6 +1,7 @@
 import pygame
 import math
 
+
 class DotIndicator:
     def __init__(self, screen):
         self.color = (255, 0, 0)
