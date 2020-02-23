@@ -1,50 +1,41 @@
 import pygame
-import math
 
 
-class Projectile(pygame.Rect):
-    def __init__(self, x, y, target_x, target_y):
-        pygame.Rect.__init__(self, x, y, 5, 5)
+class Projectile(pygame.sprite.Sprite):
+    def __init__(self, x, y, target_pos):
+        pygame.sprite.Sprite.__init__(self)
 
-        # Coordinates:
-        # -bullet
+        # Bullet position:
         self.x = x
         self.y = y
-        # -ship (at the moment of a shot)
-        self.ship_x = x
-        self.ship_y = y
-        # -target
-        self.target_x = target_x
-        self.target_y = target_y
 
-        self.speed = 15  # px per screen
-        self.color = (255, 0, 0)
+        # these parameters should be moved to subclasses
+        self.speed = 8  # px per screen
+        self.image = pygame.image.load('res\projectile\projectile.png').convert_alpha()
 
-        # counting Step (=speed) coordinates needed to move to target in one tick
-        self.step_x_initial = (self.target_x - self.x) * self.speed \
-                      / math.sqrt((self.target_x - self.x) ** 2 + (self.target_y - self.y) ** 2)
-        self.step_y_initial = (self.target_y - self.y) * self.speed \
-                      / math.sqrt((self.target_x - self.x) ** 2 + (self.target_y - self.y) ** 2)
+        self.rect = self.image.get_rect()
 
-    # making one Step move to target
-    def move_step(self):
+        self.pos = pygame.Vector2(self.x, self.y)  # bullet position vector
+        self.target = pygame.Vector2(target_pos)  # target position vector
+        self.move = self.target - self.pos  # vector between bullet and target
+        move_length = self.move.length()
+        self.angle = self.move.angle_to(pygame.Vector2(1, 0))  # angle between oX and move Vector
 
-        # if bullet went through target point it still should continue moving in this direction
-        if abs(self.x-self.ship_x) >= abs(self.target_x-self.ship_x):
-            self.step_x = self.step_x_initial
-            self.step_y = self.step_y_initial
+        self.rotate(self.angle)  # rotate image to target
 
-        # recounting Step coordinates to compensate rounding error
-        else:
-            self.step_x = (self.target_x - self.x) * self.speed \
-                          / math.sqrt((self.target_x - self.x) ** 2 + (self.target_y - self.y) ** 2)
-            self.step_y = (self.target_y - self.y) * self.speed \
-                          / math.sqrt((self.target_x - self.x) ** 2 + (self.target_y - self.y) ** 2)
+        if move_length < self.speed:
+            self.pos = self.target
+        elif move_length != 0:
+            self.move.normalize_ip()
+            self.move = self.move * self.speed
 
-        # moving bullet for one Step
-        self.x += self.step_x
-        self.y += self.step_y
+    def rotate(self, angle):
+        """rotate an image"""
+        self.image = pygame.transform.rotate(self.image, angle)
+        self.rect = self.image.get_rect()
 
-    # drawing bullet on the screen
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self)
+    def update(self):
+        self.pos += self.move
+        self.rect.topleft = list(int(v) for v in self.pos)
+
+
