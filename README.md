@@ -1,2 +1,22 @@
 # project_warp511
-Concept project
+### 2020-03-11
+- Full screen integration (sergey)
+	- How to make screen full
+	- How to work with different resolutions
+- AWSD movement (aleks)
+	- W = forward
+	- D = backwards
+	- A = counter clockwise rotation of the ship body
+	- B = clockwise rotation of the ship body
+	- Speed is persistent without input
+- rework the general ship in to sprites and vectors (see bulets solution)
+- asteroids (sergey)
+	- random generation
+		- angle
+		- starting position
+		- speed
+		- size
+		- frequency
+- colision base (sergey)
+	- health points
+	- bullet damage
